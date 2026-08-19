@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Topps Access Finder</title>
+    <!--
+      GitHub Pages serves this file for any unknown path (e.g. a refreshed
+      deep link like /ToppsNPN/product/some-id). It stashes the real URL and
+      redirects to the app root; index.html's inline script restores it with
+      history.replaceState before the router mounts, so deep links and
+      refreshes both resolve correctly.
+    -->
+    <script>
+      sessionStorage.redirect = location.href;
+      location.replace('/ToppsNPN/');
+    </script>
+  </head>
+  <body></body>
+</html>
