@@ -24,6 +24,32 @@
         }
       })();
     </script>
+    <!--
+      Catches anything React's error boundary can't: an error while the
+      module script itself is loading/evaluating, before React ever mounts.
+      Without this, that failure is a silent blank page with no clue why.
+    -->
+    <script>
+      (function () {
+        function showFatalError(message) {
+          if (document.getElementById('fatal-error-banner')) return;
+          var el = document.createElement('div');
+          el.id = 'fatal-error-banner';
+          el.style.cssText =
+            'position:fixed;inset:0;z-index:99999;overflow:auto;padding:24px;' +
+            'font-family:monospace;color:#fca5a5;background:#0b1220;white-space:pre-wrap;';
+          el.textContent = 'Failed to load the app:\n\n' + message;
+          document.body.appendChild(el);
+        }
+        window.addEventListener('error', function (e) {
+          showFatalError((e.error && e.error.stack) || e.message || String(e));
+        });
+        window.addEventListener('unhandledrejection', function (e) {
+          var reason = e.reason;
+          showFatalError((reason && reason.stack) || (reason && reason.message) || String(reason));
+        });
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
